@@ -56,5 +56,13 @@ $pricingRequestResource->setDuration(1, 'day');
 $pricingRequestResource->setBeneficiariesCount(2);
 $pricingRequestResource->addActivity('VTT');
 
-$pricing = $api->besafePricing->call($pricingRequestResource);
+$pricingResponseResource = $api->besafePricing->call($pricingRequestResource);
+
+var_dump($pricingResponseResource);
+/*
+object(AssurConnect\Api\Resources\Response\Besafe\PricingResource)#8 (2) {
+  ["price"]=> float(4)
+  ["currency"]=> string(3) "EUR"
+}
+*/
 ```
