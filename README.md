@@ -53,8 +53,8 @@ $api->setToken($token);
 // Pricing for BeSafe insurance product.
 $pricingRequestResource = new \AssurConnect\Api\Resources\Request\Besafe\PricingResource;
 $pricingRequestResource->setDuration(1, 'day');
-$pricingRequestResource->setBeneficiariesCount(3);
-$pricingRequestResource->addActivity('VEVI');
+$pricingRequestResource->setBeneficiariesCount(2);
+$pricingRequestResource->addActivity('VTT');
 
 $pricing = $api->besafePricing->call($pricingRequestResource);
 ```
