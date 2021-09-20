@@ -35,8 +35,10 @@ The package requires the following extensions in order to work properly:
 
 ```php
 
-// API initialization using Sandbox environment.
+// API initialization.
 $api = new \AssurConnect\Api\AssurConnectApi;
+
+// Use Sandbox environment.
 $api->useSandbox();
 
 // Authentication.
@@ -50,7 +52,10 @@ $clientRequestResource = new \AssurConnect\Api\Resources\Request\Auth\ClientReso
 $token = $api->authToken->call($clientRequestResource);
 $api->setToken($token);
 
-// Pricing for BeSafe insurance product.
+// Change language.
+// $api->setLanguage('fr');
+
+// Get Pricing for BeSafe insurance product.
 $pricingRequestResource = new \AssurConnect\Api\Resources\Request\Besafe\PricingResource;
 $pricingRequestResource->setDuration(1, 'day');
 $pricingRequestResource->setBeneficiariesCount(2);
@@ -63,6 +68,49 @@ var_dump($pricingResponseResource);
 object(AssurConnect\Api\Resources\Response\Besafe\PricingResource)#8 (2) {
   ["price"]=> float(4)
   ["currency"]=> string(3) "EUR"
+}
+*/
+
+// Check Subscription information for BeSafe insurance product.
+$subscriberEntity = new \AssurConnect\Api\Resources\Request\Besafe\Entities\SubscriberEntity();
+$subscriberEntity->setLastname('Eiffel');
+$subscriberEntity->setFirstname('Tower');
+$subscriberEntity->setAddress('Champ de Mars');
+$subscriberEntity->setAdditionalAddress('5 avenue Anatole France');
+$subscriberEntity->setZipCode('75007');
+$subscriberEntity->setCity('Paris');
+$subscriberEntity->setBirthdate('1989-03-31');
+$subscriberEntity->setEmail('eiffel.tower@paris.city');
+$subscriberEntity->setPhone('0892701239');
+
+$subscriptionRequestResource = \AssurConnect\Api\Resources\Request\Besafe\SubscriptionResource::createFromPricingRequestResource($pricingRequestResource, $pricingResponseResource);
+$subscriptionRequestResource->setSubscriber($subscriberEntity);
+$subscriptionRequestResource->addBeneficiaryFromSubscriber();
+$subscriptionRequestResource->addBeneficiary(
+    'Triomphe',    // lastname
+    'Arc',         // firstname
+    '1986-07-29'   // birthDate
+);
+$subscriptionRequestResource->setEffectiveDate(new DateTime());
+
+$subscriptionCheckResponseResource = $api->besafeSubscriptionCheck->call($subscriptionRequestResource);
+
+var_dump($subscriptionCheckResponseResource);
+/*
+object(AssurConnect\Api\Resources\Response\Besafe\SubscriptionResource)#11 (1) {
+  ["confirmation"]=>
+  string(23) "Check Integrity Data OK"
+}
+*/
+
+// Create Subscription information for BeSafe insurance product (be sure to have a valid payment before).
+$subscriptionResponseResource = $api->besafeSubscriptionCreate->call($subscriptionRequestResource);
+
+var_dump($subscriptionResponseResource);
+/*
+object(AssurConnect\Api\Resources\Response\Besafe\SubscriptionResource)#11 (1) {
+  ["confirmation"]=>
+  string(19) "Subscription saved."
 }
 */
 ```
