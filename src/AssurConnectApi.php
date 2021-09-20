@@ -15,11 +15,18 @@ class AssurConnectApi
         'sandbox' => 'https://sandbox.api.assur-connect.io',
     ];
 
+    public const API_LANGUAGES = [
+        'en',
+        'fr',
+    ];
+
     protected string $apiEndpoint;
 
     protected array $clientInformation = [];
 
     protected string $environment = 'live';
+
+    protected string $language = 'en';
 
     protected \AssurConnect\Api\HttpClient\HttpClientInterface $httpClient;
 
@@ -60,10 +67,19 @@ class AssurConnectApi
     protected function setApiEndpoint(string $environment): void
     {
         if (!array_key_exists($environment, self::API_ENDPOINTS)) {
-            throw new ApiException('The environment ' . $environment . ' was not found.', 404);
+            throw new ApiException('The environment `' . $environment . '` was not found.', 404);
         }
 
         $this->apiEndpoint = self::API_ENDPOINTS[$environment];
+    }
+
+    public function setLanguage(string $language): void
+    {
+        if (!in_array($language, self::API_LANGUAGES)) {
+            throw new ApiException('The language `' . $language . '` is not available.', 404);
+        }
+
+        $this->language = $language;
     }
 
     public function addClientInformation(string $clientInformation): void
@@ -83,6 +99,7 @@ class AssurConnectApi
         $headers = [
             'User-Agent' => implode(' ', $this->clientInformation),
             'Accept' => 'application/json',
+            'language' => $this->language,
         ];
 
         if ($encodeBodyJson && $this->token !== null) {
