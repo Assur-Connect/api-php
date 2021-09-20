@@ -122,4 +122,14 @@ class SubscriptionResource extends BesafeResource
             $this->transaction['currency'] = $currency;
         }
     }
+
+    public function setTransactionReference(string $reference): void
+    {
+        $this->transaction['reference'] = $reference;
+    }
+
+    public function setTransactionTimestamp(int $timestamp): void
+    {
+        $this->transaction['timestamp'] = $timestamp;
+    }
 }
