@@ -92,6 +92,7 @@ $subscriptionRequestResource->addBeneficiary(
     '1986-07-29'   // birthDate
 );
 $subscriptionRequestResource->setEffectiveDate(new DateTime());
+// $subscriptionRequestResource->setTransactionReference('TEST_000001');
 
 $subscriptionCheckResponseResource = $api->besafeSubscriptionCheck->call($subscriptionRequestResource);
 
