@@ -33,6 +33,7 @@ try {
     $subscriptionRequestResource->addActivity($activityCode);
     $subscriptionRequestResource->setEffectiveDate(new DateTime());
     $subscriptionRequestResource->setPricing($pricingResponseResource->price, $pricingResponseResource->currency);
+    $subscriptionRequestResource->setTransactionReference('TEST_000001');
 
     $subscriptionResponseResource = $api->besafeSubscriptionCreate->call($subscriptionRequestResource);
 
