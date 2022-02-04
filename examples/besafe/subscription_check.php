@@ -4,11 +4,16 @@ try {
     require '../initialization.php';
 
     $activityCode = 'VTT';
+    $discountCode = null;
 
     // Pricing request.
     $pricingRequestResource = new \AssurConnect\Api\Resources\Request\Besafe\PricingResource();
     $pricingRequestResource->addActivity($activityCode);
     $pricingRequestResource->setBeneficiariesCount(2);
+
+    if ($discountCode !== null) {
+        $pricingRequestResource->setDiscountCode($discountCode);
+    }
 
     $pricingResponseResource = $api->besafePricing->call($pricingRequestResource);
 
@@ -38,6 +43,10 @@ try {
     $subscriptionRequestResource->addActivity($activityCode);
     $subscriptionRequestResource->setEffectiveDate(new DateTime());
     $subscriptionRequestResource->setPricing($pricingResponseResource->price, $pricingResponseResource->currency);
+
+    if ($discountCode !== null) {
+        $subscriptionRequestResource->setDiscountCode($discountCode);
+    }
 
     $subscriptionCheckResponseResource = $api->besafeSubscriptionCheck->call($subscriptionRequestResource);
 

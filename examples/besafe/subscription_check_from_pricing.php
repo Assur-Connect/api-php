@@ -4,11 +4,16 @@ try {
     require '../initialization.php';
 
     $activityCode = 'VTT';
+    $discountCode = null;
 
     // Pricing request.
     $pricingRequestResource = new \AssurConnect\Api\Resources\Request\Besafe\PricingResource();
     $pricingRequestResource->addActivity($activityCode);
     $pricingRequestResource->setBeneficiariesCount(2);
+
+    if ($discountCode !== null) {
+        $pricingRequestResource->setDiscountCode($discountCode);
+    }
 
     $pricingResponseResource = $api->besafePricing->call($pricingRequestResource);
 
