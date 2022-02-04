@@ -29,7 +29,7 @@ class SubscriptionResource extends BesafeResource
 
     public function prepare(): array
     {
-        return [
+        $data = [
             'subscriber' => $this->subscriber->prepare(),
             'product' => [
                 'coverage' => [
@@ -49,6 +49,12 @@ class SubscriptionResource extends BesafeResource
                 'transaction_number' => ($this->transaction['reference'] !== '' ? $this->transaction['reference'] : bin2hex(random_bytes(rand(1, 10)))),
             ],
         ];
+
+        if ($this->discountCode !== null) {
+            $data['product']['promo_code'] = $this->discountCode;
+        }
+
+        return $data;
     }
 
     public static function createFromPricingRequestResource(PricingRequestResource $pricingRequestResource, PricingResponseResource $pricingResponseResource): SubscriptionResource
@@ -61,6 +67,10 @@ class SubscriptionResource extends BesafeResource
 
         $resource->transaction['amount'] = $pricingResponseResource->price;
         $resource->transaction['currency'] = $pricingResponseResource->currency;
+
+        if ($pricingRequestResource->discountCode !== null) {
+            $resource->setDiscountCode($pricingRequestResource->discountCode);
+        }
 
         return $resource;
     }
@@ -103,6 +113,11 @@ class SubscriptionResource extends BesafeResource
             'firstname' => $firstname,
             'date_of_birth' => $birthDate,
         ];
+    }
+
+    public function setDiscountCode(string $discountCode): void
+    {
+        $this->discountCode = $discountCode;
     }
 
     public function addBeneficiaryFromSubscriber(): void

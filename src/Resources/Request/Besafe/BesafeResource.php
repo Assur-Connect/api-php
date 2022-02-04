@@ -12,6 +12,7 @@ class BesafeResource extends BaseResource
     protected int $duration = 1;
     protected string $durationUnit = 'day';
     protected int $beneficiariesCount = 1;
+    protected ?string $discountCode = null;
 
     protected array $coverageList = [
         'basic',
