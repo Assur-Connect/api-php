@@ -60,6 +60,8 @@ $pricingRequestResource = new \AssurConnect\Api\Resources\Request\Besafe\Pricing
 $pricingRequestResource->setDuration(1, 'day');
 $pricingRequestResource->setBeneficiariesCount(2);
 $pricingRequestResource->addActivity('VTT');
+// Add Discount Code.
+// $pricingRequestResource->setDiscountCode('MYDISCOUNTCODE');
 
 $pricingResponseResource = $api->besafePricing->call($pricingRequestResource);
 
