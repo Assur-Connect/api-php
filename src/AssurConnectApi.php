@@ -13,6 +13,7 @@ class AssurConnectApi
     public const API_ENDPOINTS = [
         'live' => 'https://api.assur-connect.io',
         'sandbox' => 'https://sandbox.api.assur-connect.io',
+        'staging' => 'https://preprod.api.assur-connect.io',
     ];
 
     public const API_LANGUAGES = [
@@ -64,12 +65,22 @@ class AssurConnectApi
         }
     }
 
+    public function useStaging(bool $activate = true): void
+    {
+        if ($activate) {
+            $this->setApiEndpoint('staging');
+        } else {
+            $this->setApiEndpoint('live');
+        }
+    }
+
     protected function setApiEndpoint(string $environment): void
     {
         if (!array_key_exists($environment, self::API_ENDPOINTS)) {
             throw new ApiException('The environment `' . $environment . '` was not found.', 404);
         }
 
+        $this->environment = $environment;
         $this->apiEndpoint = self::API_ENDPOINTS[$environment];
     }
 
