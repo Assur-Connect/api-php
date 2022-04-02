@@ -26,12 +26,11 @@ require_once('vendor/autoload.php');
 
 The package requires the following extensions in order to work properly:
 
--   [`curl`](https://secure.php.net/manual/en/book.curl.php)
--   [`json`](https://secure.php.net/manual/en/book.json.php)
--   [`openssl`](https://secure.php.net/manual/en/book.openssl.php)
+- [`curl`](https://secure.php.net/manual/en/book.curl.php)
+- [`json`](https://secure.php.net/manual/en/book.json.php)
+- [`openssl`](https://secure.php.net/manual/en/book.openssl.php)
 
 ## Getting Started
-
 
 ```php
 
@@ -40,6 +39,8 @@ $api = new \AssurConnect\Api\AssurConnectApi;
 
 // Use Sandbox environment.
 $api->useSandbox();
+// Or use Staging environment.
+$api->useStaging();
 
 // Authentication.
 $clientRequestResource = new \AssurConnect\Api\Resources\Request\Auth\ClientResource(
